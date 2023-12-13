@@ -17,6 +17,13 @@ class IndexController extends Controller
 
     public function createPost(Request $request)
     {
+        $request->validate([
+            'title' => 'required|string|max:15',
+            'description' => 'required|string|max:50',
+            'image_name' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'pdf_file' => 'required|mimes:pdf|max:2048',
+        ]);
+
         if ($request->hasFile('image_name')) {
             $imageFile = $request->file('image_name');
             $imageFileName = $imageFile->getClientOriginalName();
