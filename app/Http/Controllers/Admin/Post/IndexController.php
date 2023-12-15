@@ -3,23 +3,22 @@
 namespace App\Http\Controllers\Admin\Post;
 
 use App\Http\Controllers\Controller;
-use App\Models\News;
+use App\Models\Posts;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class IndexController extends Controller
 {
     public function index()
     {
-        $news = News::all();
-        return view('admin.post.index', ['news' => $news]);
+        $posts = Posts::all();
+        return view('admin.post.index', ['posts' => $posts]);
     }
 
     public function createPost(Request $request)
     {
         $request->validate([
-            'title' => 'required|string|max:15',
-            'description' => 'required|string|max:50',
+            'title' => 'required|string|max:50',
+            'description' => 'required|string|max:100',
             'image_name' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'pdf_file' => 'required|mimes:pdf|max:2048',
         ]);
@@ -38,25 +37,30 @@ class IndexController extends Controller
             $pdfPath = $pdfFile->storeAs('pdfs', $pdfFileName, 'public');
         }
 
-        $news = new News;
+        $posts = new Posts;
 
-        $news->title = $request->title;
-        $news->description = $request->description;
-        $news->image_name = $imagePath;
-        $news->pdf_file = $pdfPath;
+        $posts->title = $request->title;
+        $posts->description = $request->description;
+        $posts->image_name = $imagePath;
+        $posts->pdf_file = $pdfPath;
 
-        $news->save();
+        $posts->save();
 
         return redirect()->route('admin.post.index')->with('success', 'Post created successfully!');
     }
 
-    public function updateThePost(Request $request, News $news)
+    public function updateThePost(Request $request, Posts $posts)
     {
-        $newsId = $request->input('id');
+        $request->validate([
+            'title' => 'required|string|max:15',
+            'description' => 'required|string|max:50',
+        ]);
 
-        $news = News::findOrFail($newsId);
+        $postId = $request->input('id');
 
-        $news->update($request->only(['title', 'description']));
+        $posts = Posts::findOrFail($postId);
+
+        $posts->update($request->only(['title', 'description']));
 
         return redirect()->route('admin.post.index')->with('success', 'Post created successfully!');
     }
@@ -69,7 +73,7 @@ class IndexController extends Controller
 
     public function goToID($id)
     {
-        $news = News::find($id);
-        return view('admin.post.edit', ['news' => $news]);
+        $posts = Posts::find($id);
+        return view('admin.post.edit', ['news' => $posts]);
     }
 }

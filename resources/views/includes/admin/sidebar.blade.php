@@ -5,8 +5,8 @@
             <a href="{{ route('admin.post.index') }}" class="nav-link">
                 <i class="nav-icon fas fa-align-justify"></i>
                 <p>
-                    Posts
-                    <span class="badge badge-info right">{{ \App\Models\News::count() }}</span>
+                    Посты
+                    <span class="badge badge-info right">{{ \App\Models\Posts::count() }}</span>
                 </p>
             </a>
         </li>

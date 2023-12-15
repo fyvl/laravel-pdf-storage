@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Admin\Post\IndexController;
 use App\Http\Controllers\Admin\LoginController;
-use App\Http\Controllers\NewsController;
+use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [NewsController::class, 'index'])->name('home');
+Route::get('/', [PostController::class, 'index'])->name('home');
 
 Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
     Route::get('/', [LoginController::class, 'index'])->name('admin.login');
